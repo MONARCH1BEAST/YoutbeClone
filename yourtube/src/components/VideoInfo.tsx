@@ -145,7 +145,7 @@ const VideoInfo = ({ video }: any) => {
         userId: user._id,
       });
 
-      const backendUrl = process.env.BACKEND_URL;
+      const backendUrl = process.env.NEXT_PUBLIC_API_URL;
 
       if (!backendUrl || !res.data.downloadId) {
         toast.error("Download URL is unavailable.");

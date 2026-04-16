@@ -105,7 +105,7 @@ npm install
 4. Configure the following environment variables:
 
 ```env
-PORT=5000
+PORT=10000
 DB_URL=mongodb://127.0.0.1:27017/yourtube
 RAZORPAY_KEY_ID=rzp_test_your_key_id
 RAZORPAY_KEY_SECRET=your_test_key_secret
@@ -119,6 +119,7 @@ EMAIL_PASS=your_app_password
 TWILIO_SID=your_twilio_sid
 TWILIO_AUTH_TOKEN=your_twilio_auth_token
 TWILIO_PHONE=+1234567890
+FRONTEND_URL=https://your-netlify-site.netlify.app
 ```
 
 5. Run the server:
@@ -142,7 +143,12 @@ npm install
 ```
 
 3. Configure frontend environment variables if needed.
-   - The frontend uses `NEXT_PUBLIC_BACKEND_URL` if defined.
+   - Create a `.env.local` file and add:
+
+```env
+NEXT_PUBLIC_API_URL=https://your-render-backend.onrender.com
+NEXT_PUBLIC_RAZORPAY_KEY_ID=rzp_test_your_key_id
+```
 
 4. Run the frontend:
 
@@ -151,6 +157,37 @@ npm run dev
 ```
 
 5. Open the app at `http://localhost:3000`.
+
+## Deployment
+
+### Backend (Render)
+
+1. Push the `server/` code to a Git repository.
+2. Create a new Web Service on Render.
+3. Connect your Git repo and set the root directory to `server/`.
+4. Set the build command to `npm install`.
+5. Set the start command to `npm start`.
+6. Add all environment variables from `server/.env.example` in Render's environment settings.
+7. Deploy and note the backend URL (e.g., `https://your-app.onrender.com`).
+
+### Frontend (Netlify)
+
+1. Push the `yourtube/` code to a Git repository.
+2. Create a new site on Netlify.
+3. Connect your Git repo and set the build command to `npm run build`.
+4. Set the publish directory to `out` (or `.next` if using static export).
+5. Add environment variables:
+   - `NEXT_PUBLIC_API_URL=https://your-render-backend.onrender.com`
+   - `NEXT_PUBLIC_RAZORPAY_KEY_ID=rzp_test_your_key_id`
+6. Deploy and note the frontend URL (e.g., `https://your-site.netlify.app`).
+7. Update the backend's `FRONTEND_URL` environment variable on Render to match the Netlify URL.
+
+### Post-Deployment
+
+- Update `FRONTEND_URL` in Render with the actual Netlify domain.
+- Test the `/health` endpoint on Render.
+- Ensure CORS allows requests from Netlify.
+- Verify video playback, authentication, and call features work in production.
 
 ## Important Environment Variables
 

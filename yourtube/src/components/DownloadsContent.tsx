@@ -72,7 +72,7 @@ export default function DownloadsContent() {
   }, [user?._id]);
 
   const triggerFileDownload = (downloadId: string) => {
-    const backendUrl = process.env.BACKEND_URL;
+    const backendUrl = process.env.NEXT_PUBLIC_API_URL;
 
     if (!backendUrl) {
       toast.error("Backend URL is unavailable.");
@@ -152,7 +152,7 @@ export default function DownloadsContent() {
               <Link href={`/watch/${item.videoid._id}`} className="flex-shrink-0">
                 <div className="relative w-40 aspect-video bg-gray-100 rounded overflow-hidden">
                   <video
-                    src={`${process.env.BACKEND_URL}/${normalizeMediaPath(
+                    src={`${process.env.NEXT_PUBLIC_API_URL}/${normalizeMediaPath(
                       item.videoid?.filepath || ""
                     )}`}
                     className="object-cover group-hover:scale-105 transition-transform duration-200"

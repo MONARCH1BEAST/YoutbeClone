@@ -73,7 +73,7 @@ const SearchResult = ({ query }: any) => {
               <Link href={`/watch/${video._id}`} className="flex-shrink-0">
                 <div className="relative w-80 aspect-video bg-gray-100 rounded-lg overflow-hidden">
                   <video
-                    src={`${process.env.BACKEND_URL}/${video?.filepath}`}
+                    src={`${process.env.NEXT_PUBLIC_API_URL}/${video?.filepath}`}
                     className="object-cover group-hover:scale-105 transition-transform duration-200"
                   />
                   <div className="absolute bottom-2 right-2 bg-black/80 text-white text-xs px-1 rounded">

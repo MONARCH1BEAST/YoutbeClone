@@ -15,13 +15,27 @@ import callroutes from "./routes/call.js";
 dotenv.config();
 const app = express();
 import path from "path";
-app.use(cors());
+
+// CORS configuration for production
+const corsOptions = {
+  origin: process.env.FRONTEND_URL || "http://localhost:3000",
+  credentials: true,
+};
+app.use(cors(corsOptions));
+
 app.use(express.json({ limit: "30mb", extended: true }));
 app.use(express.urlencoded({ limit: "30mb", extended: true }));
 app.use("/uploads", express.static(path.join("uploads")));
+
 app.get("/", (req, res) => {
   res.send("You tube backend is working");
 });
+
+// Health check route for Render
+app.get("/health", (req, res) => {
+  res.status(200).json({ status: "OK", message: "Server is running" });
+});
+
 app.use(bodyParser.json());
 app.use("/user", userroutes);
 app.use("/video", videoroutes);
@@ -32,9 +46,10 @@ app.use("/comment", commentroutes);
 app.use("/download", downloadroutes);
 app.use("/premium", premiumroutes);
 app.use("/call", callroutes);
-const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => {
+const PORT = process.env.PORT || 10000;
+
+app.listen(PORT, "0.0.0.0", () => {
   console.log(`server running on port ${PORT}`);
 });
 
@@ -45,5 +60,6 @@ mongoose
     console.log("Mongodb connected");
   })
   .catch((error) => {
-    console.log(error);
+    console.error("MongoDB connection error:", error);
+    process.exit(1);
   });
